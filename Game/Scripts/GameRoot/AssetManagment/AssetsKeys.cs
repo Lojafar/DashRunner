@@ -8,5 +8,6 @@
         public const string MainSettingsKey = "MainSettings";
         public const string LevelSelectionKey = "LevelSelectionPanel";
         public const string LevelButtonKey = "LevelButton";
+        public const string ShopViewKey = "ShopTab";
     }
 }

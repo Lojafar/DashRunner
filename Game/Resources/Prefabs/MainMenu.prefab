@@ -248,6 +248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayGameBtn: {fileID: 1285236229001946542}
   SettingsBtn: {fileID: 5627753194155613341}
+  ShopBtn: {fileID: 2865245527617977876}
 --- !u!1 &4795199888887089680
 GameObject:
   m_ObjectHideFlags: 0

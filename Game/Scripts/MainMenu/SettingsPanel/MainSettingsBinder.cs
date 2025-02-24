@@ -11,24 +11,26 @@ namespace Game.MainMenu.SettingsPanel
         readonly TabsHandler tabsHandler;
         readonly AllDataContainer allDataContainer;
         readonly ISaverLoader saverLoader;
-        public MainSettingsBinder(TabsHandler _tabsHandler, IUIFactory _uiFactory, AllDataContainer _allDataContainer, ISaverLoader _saverLoader)
+        readonly MainMenuInstances mainMenuInstances;
+        public MainSettingsBinder(TabsHandler _tabsHandler, IUIFactory _uiFactory, AllDataContainer _allDataContainer, ISaverLoader _saverLoader, MainMenuInstances _mainMenuInstances)
         {
             tabsHandler = _tabsHandler;
             allDataContainer = _allDataContainer;
             saverLoader = _saverLoader;
-
+            mainMenuInstances = _mainMenuInstances;
             settingsModel = new MainSettingsModel(tabsHandler, allDataContainer, saverLoader);
 
             CreateAndBindView(_uiFactory);
         }
         async void CreateAndBindView(IUIFactory uiFactory)
         {
-            settingsView = await uiFactory.CreateMainSettingsView();
+            settingsView = await uiFactory.CreateMainSettingsView(mainMenuInstances.MainMenuCanvas.transform);
             Bind();
         }
         void Bind()
         {
             MainSettingsVM settingsVM = new(settingsModel);
+            settingsVM.Init();
             settingsView.Bind(settingsVM);
 
             tabsHandler.RegisterTabModel(settingsModel);

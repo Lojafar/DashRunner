@@ -14,8 +14,8 @@ namespace Game.Root.UI.Tabs
         public ParentTabModel()
         {
             tabsMap = new Dictionary<Type, ITabModel>();
-            OpeningEvent = new();
-            ClosingEvent = new();
+            OpeningEvent = new Subject<Action>();
+            ClosingEvent = new Subject<Action>();
         }
         public virtual void Open(Action callback)
         {

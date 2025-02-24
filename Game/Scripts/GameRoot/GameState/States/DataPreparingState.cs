@@ -33,10 +33,15 @@ namespace Game.Root.GameState.States
             SettingsData settingsDataInit = initDataLoaderBase.GetInitSettings();
             ProgressData progressData = await saverLoader.LoadProgress();
             SettingsData settingsData = await saverLoader.LoadSettings();
+
             allDataContainer.ProgressData = progressData == null ? new ProgressDataProxy(progressDataInit) : 
                 new ProgressDataProxy(progressData);
+            allDataContainer.ProgressData.Init();
+
             allDataContainer.SettingsData = settingsData == null ? new SettingsDataProxy(settingsDataInit) :
                 new SettingsDataProxy(settingsData, settingsDataInit);
+            allDataContainer.SettingsData.Init();
+
         }
         public void Exit()
         {

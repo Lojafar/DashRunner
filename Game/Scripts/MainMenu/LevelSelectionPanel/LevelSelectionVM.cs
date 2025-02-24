@@ -13,6 +13,7 @@ namespace Game.MainMenu.LevelSelectionPanel
         public readonly Subject<int> OnCreateLevels;
         public readonly Subject<LevelProgress> OnLevelInit;
         public readonly Subject<int> LevelInputEvent;
+        readonly CompositeDisposable subscriptions;
         public LevelSelectionVM(LevelSelectionModel _model)
         {
             model = _model;
@@ -22,8 +23,12 @@ namespace Game.MainMenu.LevelSelectionPanel
             OnLevelInit = model.LevelInitEvent;
             BackInputEvent = new Subject<Unit>();
             LevelInputEvent = new Subject<int>();
-            BackInputEvent.ThrottleFirst(TimeSpan.FromSeconds(0.3f)).Subscribe(_ => model.OnBackInput());
-            LevelInputEvent.ThrottleFirst(TimeSpan.FromSeconds(0.3f)).Subscribe(lvlNum => model.OnLevelInput(lvlNum));
+            subscriptions = new CompositeDisposable();
+        }
+        public void Init()
+        {
+            BackInputEvent.ThrottleFirst(TimeSpan.FromSeconds(0.3f)).Subscribe(_ => model.OnBackInput()).AddTo(subscriptions);
+            LevelInputEvent.ThrottleFirst(TimeSpan.FromSeconds(0.3f)).Subscribe(lvlNum => model.OnLevelInput(lvlNum)).AddTo(subscriptions);
         }
         public void OnAllLevelsSpawned()
         {

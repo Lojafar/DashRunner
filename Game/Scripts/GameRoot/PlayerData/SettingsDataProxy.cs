@@ -19,13 +19,19 @@ namespace Game.Root.Data
         {
             if (_settingsData.MusicVolume < 0) _settingsData.MusicVolume = _settingsDataInit.MusicVolume;
             if (_settingsData.SoundsVolume < 0) _settingsData.SoundsVolume = _settingsDataInit.SoundsVolume;
+
             Constructor(_settingsData);
         }
         void Constructor(SettingsData _settingsData)
         {
             dataOrigin = _settingsData;
-            MusicVolume = new ReactiveProperty<float>(dataOrigin.MusicVolume);
-            SoundsVolume = new ReactiveProperty<float>(dataOrigin.SoundsVolume);
+            MusicVolume = new ReactiveProperty<float>();
+            SoundsVolume = new ReactiveProperty<float>();
+        }
+        public void Init()
+        {
+            MusicVolume.Value = dataOrigin.MusicVolume;
+            SoundsVolume.Value = dataOrigin.SoundsVolume;
             MusicVolume.Skip(1).Subscribe(newVolume =>
             {
                 if (CheckVolume(newVolume)) dataOrigin.MusicVolume = newVolume;

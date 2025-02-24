@@ -5,7 +5,7 @@ namespace Game.Root.Data
     [Serializable]
     public class ProgressData
     {
-        public LevelProgress[] LevelsProgresses;
+        public List<LevelProgress> LevelsProgresses;
     }
     [Serializable]
     public class LevelProgress

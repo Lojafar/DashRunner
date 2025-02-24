@@ -2,6 +2,7 @@ using Game.Root.UI;
 using Game.Root.UI.Tabs;
 using Game.MainMenu.SettingsPanel;
 using Game.MainMenu.LevelSelectionPanel;
+using Game.MainMenu.ShopPanel;
 namespace Game.MainMenu.MenuPanel
 {
     public class MainMenuModel : TabModel
@@ -11,13 +12,17 @@ namespace Game.MainMenu.MenuPanel
         {
             tabsHandler = _tabsHandler;
         }
-        public void OnPlayGameInput()
+        public void OnOpenLevelsInput()
         {
             tabsHandler.OpenTab<LevelSelectionModel>();
         }
         public void OnOpenSettingsInput()
         {
             tabsHandler.OpenTab<MainSettingsModel>();
+        }
+        public void OnOpenShopInput()
+        {
+            tabsHandler.OpenTab<ShopModel>();
         }
     }
 }

@@ -14,7 +14,6 @@ namespace Game.Root.UI
         public TabsHandler()
         {
             registeredModelsMap = new Dictionary<Type, ITabModel>();
-            OnTabFinished = null;
         }
         public void RegisterTabModel<T>(T tabModel) where T : ITabModel
         {

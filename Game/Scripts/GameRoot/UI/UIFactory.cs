@@ -3,6 +3,7 @@ using Game.Root.UI.LoadingScreen;
 using Game.MainMenu.MenuPanel;
 using Game.MainMenu.SettingsPanel;
 using Game.MainMenu.LevelSelectionPanel;
+using Game.MainMenu.ShopPanel;
 using System.Threading.Tasks;
 using UnityEngine;
 using Zenject;
@@ -32,22 +33,27 @@ namespace Game.Root.UI
         {
             return await CreateUI<LoadingScreenBase>(AssetsKeys.BootLoadingScreen);
         }
-        public async Task<MainMenuViewBase> CreateMainMenuView()
+        public async Task<MainMenuViewBase> CreateMainMenuView(Transform parent = null)
         {
-            return await CreateUI<MainMenuViewBase>(AssetsKeys.MainMenuKey);
+            return await CreateUI<MainMenuViewBase>(AssetsKeys.MainMenuKey, parent);
         }
-        public async Task<MainSettingsViewBase> CreateMainSettingsView()
+        public async Task<MainSettingsViewBase> CreateMainSettingsView(Transform parent = null)
         {
-            return await CreateUI<MainSettingsViewBase>(AssetsKeys.MainSettingsKey);
+            return await CreateUI<MainSettingsViewBase>(AssetsKeys.MainSettingsKey, parent);
         }
-        public async Task<LevelSelectionViewBase> CreateLevelSelectionView()
+        public async Task<LevelSelectionViewBase> CreateLevelSelectionView(Transform parent = null)
         {
-            return await CreateUI<LevelSelectionViewBase>(AssetsKeys.LevelSelectionKey);
+            return await CreateUI<LevelSelectionViewBase>(AssetsKeys.LevelSelectionKey, parent);
         }
-        async Task<T> CreateUI<T>(string Key) where T : MonoBehaviour
+        public async Task<ShopViewBase> CreateShopView(Transform parent = null)
+        {
+            return await CreateUI<ShopViewBase>(AssetsKeys.ShopViewKey, parent);
+        }
+        async Task<T> CreateUI<T>(string Key, Transform parent = null) where T : MonoBehaviour
         {
             T prefab = await assetProvider.LoadPrefab<T>(Key);
-            return Object.Instantiate(prefab, uiRoot.transform, false);
+            Transform objParent = parent == null ? uiRoot.transform : parent;
+            return Object.Instantiate(prefab, objParent, false);
         }
     }
 }
