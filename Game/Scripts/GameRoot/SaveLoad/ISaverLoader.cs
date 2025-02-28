@@ -1,13 +1,13 @@
 using Game.Root.Data;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace Game.Root.SaveLoad
 {
     public interface ISaverLoader
     {
-        public Task SaveProgress(ProgressData progress);
-        public Task<ProgressData> LoadProgress();
-        public Task SaveSettings(SettingsData settings);
-        public Task<SettingsData> LoadSettings();
+        public UniTask SaveProgress(ProgressData progress);
+        public UniTask<ProgressData> LoadProgress();
+        public UniTask SaveSettings(SettingsData settings);
+        public UniTask<SettingsData> LoadSettings();
     }
 }

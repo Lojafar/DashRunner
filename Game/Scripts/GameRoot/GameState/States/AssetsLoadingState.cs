@@ -1,7 +1,7 @@
 ﻿using Game.Root.GameState.States.Params;
 using Game.Root.AssetManagment;
 using Game.MainMenu.MenuPanel;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Game.Root.GameState.States
@@ -23,7 +23,7 @@ namespace Game.Root.GameState.States
             gameStateMachine.EnterState<GameLoadingState, GameLoadingParam>(new GameLoadingParam(param.LoadingScreen,
                param.LoadedPercent + stateLoadingPercent));
         }
-        async Task LoadAssets()
+        async UniTask LoadAssets()
         {
             await assetProvider.LoadPrefab<Canvas>(AssetsKeys.UIRootKey);
             await assetProvider.LoadPrefab<MainMenuViewBase>(AssetsKeys.MainMenuKey);

@@ -1,7 +1,7 @@
 ﻿using Game.Root.Data;
 using Game.Utils;
 using System;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using LogType = Game.Utils.LogType;
 
@@ -11,7 +11,7 @@ namespace Game.Root.SaveLoad
     {
         const string progressKey = "PlayerProgress";
         const string settingsKey = "Settings";
-        public async Task<ProgressData> LoadProgress()
+        public async UniTask<ProgressData> LoadProgress()
         {
             if (!PlayerPrefs.HasKey(progressKey))
             {
@@ -24,7 +24,7 @@ namespace Game.Root.SaveLoad
                 return progress;
             }
         }
-        public async Task<SettingsData> LoadSettings()
+        public async UniTask<SettingsData> LoadSettings()
         {
             if (!PlayerPrefs.HasKey(settingsKey))
             {
@@ -37,10 +37,10 @@ namespace Game.Root.SaveLoad
                 return settings;
             }
         }
-        async Task<T> Deserialize<T>(string jsonObj) where T : class
+        async UniTask<T> Deserialize<T>(string jsonObj) where T : class
         {
             T result = null;
-            await Task.Run(() =>
+            await UniTask.RunOnThreadPool(() =>
             {
                 try
                 {
@@ -53,22 +53,22 @@ namespace Game.Root.SaveLoad
             });
             return result;
         }
-        public async Task SaveProgress(ProgressData progress)
+        public async UniTask SaveProgress(ProgressData progress)
         {
             string jsonObj = await Serialize(progress);
             PlayerPrefs.SetString(progressKey, jsonObj);
             PlayerPrefs.Save();
         }
-        public async Task SaveSettings(SettingsData settings)
+        public async UniTask SaveSettings(SettingsData settings)
         {
             string jsonObj = await Serialize(settings);
             PlayerPrefs.SetString(settingsKey, jsonObj);
             PlayerPrefs.Save();
         }
-        async Task<string> Serialize<T>(T obj)
+        async UniTask<string> Serialize<T>(T obj)
         {
             string result = "";
-            await Task.Run(() =>
+            await UniTask.RunOnThreadPool(() =>
             {
                 try
                 {

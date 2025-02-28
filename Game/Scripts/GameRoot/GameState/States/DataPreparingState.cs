@@ -2,7 +2,7 @@
 using Game.Root.SaveLoad;
 using Game.Root.Data;
 using Game.Root.Data.Initial;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace Game.Root.GameState.States
 {
@@ -27,7 +27,7 @@ namespace Game.Root.GameState.States
             gameStateMachine.EnterState<AssetsLoadingState, AssetLoadingParams>(new AssetLoadingParams(stateParam.LoadingScreen,
                 stateParam.LoadedPercent + stateLoadingPercent));
         }
-        public async Task LoadPlayerData()
+        public async UniTask LoadPlayerData()
         {
             ProgressData progressDataInit = initDataLoaderBase.GetInitProgress();
             SettingsData settingsDataInit = initDataLoaderBase.GetInitSettings();

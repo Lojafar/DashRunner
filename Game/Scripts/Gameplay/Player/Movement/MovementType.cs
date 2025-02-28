@@ -4,6 +4,7 @@
     {
         Standing = 0,
         Running = 1,
-        Jump = 2
+        Jump = 2,
+        Dash = 3
     }
 }

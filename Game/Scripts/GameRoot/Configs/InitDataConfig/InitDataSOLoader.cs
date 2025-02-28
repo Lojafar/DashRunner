@@ -1,5 +1,5 @@
 ﻿using Game.Root.AssetManagment;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace Game.Root.Data.Initial
 {
@@ -12,7 +12,7 @@ namespace Game.Root.Data.Initial
         {
             assetProvider = _assetProvider;
         }
-        public async Task Prewarm()
+        public async UniTask Prewarm()
         {
             dataInitSO = await assetProvider.LoadConfig<DataInitStateSO>(initialDataSOKey);
         }

@@ -1,14 +1,17 @@
 ﻿using Game.Gameplay.Player.Movement;
 using UnityEngine;
+using Zenject;
 namespace Game.Gameplay.Player.Animation
 {
-    class PlayerAnimChanger : IPlayerAnimChanger
+    class VisualAnimator : MonoBehaviour, IVisualAnimator
     {
-        readonly Animator playerAnimator;
+        [SerializeField] Animator playerAnimator;
+        [SerializeField] TrailRenderer backTrail;
         MovementType lastMovementType;
-        public PlayerAnimChanger(Player _player)
+        [Inject]
+        public void Construct(IPlayerMovable _playerMovable)
         {
-            playerAnimator = _player.PlayerAnimator;
+            _playerMovable.OnMovementChanged += HandleNewMovement;
         }
         public void HandleNewMovement(MovementType movementType)
         {
@@ -25,6 +28,12 @@ namespace Game.Gameplay.Player.Animation
                     playerAnimator.SetBool("isJumped", true);
                     playerAnimator.SetTrigger("Jump");
                     break;
+                case MovementType.Dash:
+                    playerAnimator.SetBool("isJumped", true);
+                    playerAnimator.SetTrigger("Jump");
+                    backTrail.emitting = true;
+                    break;
+
             }
             lastMovementType = movementType;
         }
@@ -34,6 +43,10 @@ namespace Game.Gameplay.Player.Animation
             {
                 case MovementType.Jump:
                     playerAnimator.SetBool("isJumped", false);
+                    break;
+                case MovementType.Dash:
+                    playerAnimator.SetBool("isJumped", false);
+                    backTrail.emitting = false;
                     break;
             }
         }

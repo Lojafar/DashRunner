@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Game.Root.AssetManagment
@@ -14,15 +14,14 @@ namespace Game.Root.AssetManagment
         {
             loadedPrefabsMap = new();
         }
-        public async Task<T> LoadPrefab<T>(string Key) where T : Object
+        public async UniTask<T> LoadPrefab<T>(string Key) where T : Object
         {
             if(loadedPrefabsMap.TryGetValue(Key, out object asset))
             {
                 return (T)asset;
             }
 
-            await Task.Delay(100); // dummy
-            T loadedAsset = (T)Resources.LoadAsync<T>(string.Format(prefabsPathPattern, Key)).asset;
+            T loadedAsset = (T)(await Resources.LoadAsync<T>(string.Format(prefabsPathPattern, Key)));
 
             if (!loadedPrefabsMap.ContainsKey(Key))
             {
@@ -31,16 +30,14 @@ namespace Game.Root.AssetManagment
            
             return loadedAsset;
         }
-        public async Task<T> LoadAsset<T>(string Key) where T : Object
+        public async UniTask<T> LoadAsset<T>(string Key) where T : Object
         {
-            await Task.Delay(50);// dummy
-            T loadedAsset = (T)Resources.LoadAsync<T>(string.Format(assetsPathPattern, Key)).asset;
+            T loadedAsset = (T) (await Resources.LoadAsync<T>(string.Format(assetsPathPattern, Key)));
             return loadedAsset;
         }
-        public async Task<T> LoadConfig<T>(string Key) where T : ScriptableObject
+        public async UniTask<T> LoadConfig<T>(string Key) where T : ScriptableObject
         {
-            await Task.Delay(50);// dummy
-            T loadedAsset = (T)Resources.LoadAsync<T>(string.Format(configsPathPattern, Key)).asset;
+            T loadedAsset = (T) (await Resources.LoadAsync<T>(string.Format(configsPathPattern, Key)));
             return loadedAsset;
         }
     }

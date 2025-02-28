@@ -12,6 +12,7 @@ namespace Game.Root.Installers
     public class GameSceneInstaller : MonoInstaller
     {
         [SerializeField] Player playerInstance;
+        [SerializeField] VisualAnimator visualAnimInstance;
         [SerializeField] CameraFollower camFollowerInstance;
         public override void InstallBindings()
         {
@@ -20,11 +21,11 @@ namespace Game.Root.Installers
         void BindServices()
         {
             Container.BindInterfacesAndSelfTo<Player>().FromInstance(playerInstance);
+            Container.Bind<IVisualAnimator>().FromInstance(visualAnimInstance);
             Container.Bind<ICameraFollower>().FromInstance(camFollowerInstance);
             Container.BindInterfacesAndSelfTo<GameSceneEntryPoint>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<PCGameInput>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<DefaultPlayerMovable>().AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<PlayerAnimChanger>().AsSingle().NonLazy();
         }
     }
 }

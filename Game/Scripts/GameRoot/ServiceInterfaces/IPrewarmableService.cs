@@ -1,9 +1,9 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace Game.Root.ServiceInterfaces
 {
     public interface IPrewarmableService
     {
-        public Task Prewarm();
+        public UniTask Prewarm();
     }
 }

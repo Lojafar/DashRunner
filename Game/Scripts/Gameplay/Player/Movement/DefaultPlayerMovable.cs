@@ -11,9 +11,11 @@ namespace Game.Gameplay.Player.Movement
         readonly float speed = 10;
         readonly float jumpForce = 10;
         readonly static LayerMask groundLayerMask = LayerMask.GetMask("Ground");
+        int lockPosDir;
         bool isMoving;
         bool isDashing;
         bool canJump;
+        bool canMove;
         public DefaultPlayerMovable(Player _player)
         {
             player = _player;
@@ -26,6 +28,7 @@ namespace Game.Gameplay.Player.Movement
         }
         IEnumerator DashRoutine()
         {
+            OnMovementChanged?.Invoke(MovementType.Dash);
             isDashing = true;
             float grav = playerRb.gravityScale;
             playerRb.gravityScale = 0;
@@ -35,6 +38,15 @@ namespace Game.Gameplay.Player.Movement
             playerRb.velocity = Vector3.zero;
             playerRb.gravityScale = grav;
             isDashing = false;
+            if (!canJump)
+            {
+                OnMovementChanged?.Invoke(MovementType.Jump);
+
+            }
+            else
+            {
+                OnMovementChanged?.Invoke(isMoving ? MovementType.Running : MovementType.Standing);
+            }
         }
         public void Jump()
         {
@@ -46,6 +58,8 @@ namespace Game.Gameplay.Player.Movement
         public void Move(float direction)
         {
             if (isDashing) return;
+
+            CheckRaycasts();
             if (direction > 0 && player.IsFliped || direction < 0 && !player.IsFliped)
             {
                 player.Flip();
@@ -58,12 +72,45 @@ namespace Game.Gameplay.Player.Movement
             }
             playerRb.velocity = new Vector3(direction * player.speed * Time.fixedDeltaTime, playerRb.velocity.y, 0);
         }
-        public void HandleCollisionStart(Collision2D collision)
+        void CheckRaycasts()
         {
             if (Physics2D.Raycast(player.FeetPosition, Vector2.down, 0.1f, groundLayerMask))
             {
                 OnMovementChanged?.Invoke(isMoving ? MovementType.Running : MovementType.Standing);
                 canJump = true;
+                canMove = true;
+            }
+            else
+            {
+                if (canJump)
+                {
+                    OnMovementChanged?.Invoke(MovementType.Jump);
+                    canJump = false;
+                }
+                if (Physics2D.Raycast(player.FrontTransform.position, player.FrontTransform.right, 0.5f, groundLayerMask))
+                {
+                    lockPosDir = player.IsFliped ? -1 : 1;
+                    if (isMoving)
+                    {
+                        isMoving = false;
+                        canMove = false;
+                    }
+                }
+                else
+                {
+                    lockPosDir = 0;
+                }
+            }
+            
+           
+        }
+        public void HandleCollisionStart(Collision2D collision)
+        {
+            if (Physics2D.Raycast(player.FeetPosition, Vector2.down, 0.1f, groundLayerMask))
+            {
+          //      OnMovementChanged?.Invoke(isMoving ? MovementType.Running : MovementType.Standing);
+          //      canJump = true;
+          //      canMove = true;
             }
         }
     }

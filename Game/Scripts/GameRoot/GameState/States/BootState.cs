@@ -2,7 +2,7 @@
 using Game.Root.UI;
 using Game.Root.UI.LoadingScreen;
 using Game.Root.GameState.States.Params;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 
 namespace Game.Root.GameState.States
@@ -19,7 +19,7 @@ namespace Game.Root.GameState.States
             prewarmServices = _prewarmServices;
             uiFactory = _uiFactory;
         }
-        async Task WarmUpServices()
+        async UniTask WarmUpServices()
         {
             foreach (IPrewarmableService prewarmableService in prewarmServices)
             {
@@ -32,7 +32,7 @@ namespace Game.Root.GameState.States
             LoadingScreenBase loadingScreen = await PrepareLoadingScr();
             gameStateMachine.EnterState<DataPreparingState, DataPreparingParam>(new DataPreparingParam(loadingScreen, exitLoadingPercent));
         }
-        async Task<LoadingScreenBase> PrepareLoadingScr()
+        async UniTask<LoadingScreenBase> PrepareLoadingScr()
         {
             LoadingScreenBase loadingScreen = await uiFactory.CreateBootLoadingScreen();
             loadingScreen.UpdateProgress(exitLoadingPercent);
